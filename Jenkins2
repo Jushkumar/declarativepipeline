@@ -1,0 +1,42 @@
+pipeline 
+{
+node any
+{		
+	stage('Continuous Download')
+    	{
+		Steps
+		{
+			git 'https://github.com/intelliqittrainings/maven.git'
+    		}
+	}
+    	stage('Continuous Build')
+    	{
+		Steps
+		{
+			sh 'mvn package'
+    		}
+	}
+	stage('Continuous Deployment')
+	{
+		steps
+    		{
+    			sh 'scp /home/ubuntu/.jenkins/workspace/scriptedpipelinesep2022/webapp/target/webapp.war ubuntu@172.31.33.176:/var/lib/tomcat9/webapps/keeplove'
+    		}
+	}
+    	stage('Continuous testing')
+    	{
+		steps
+		{
+    			git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
+			sh 'java -jar /home/ubuntu/.jenkins/workspace/scriptedpipelinesep2022/testing.jar'
+    		}
+	}
+    	stage('Continuous delivery')
+    	{
+		steps
+		{
+    			sh 'scp /home/ubuntu/.jenkins/workspace/scriptedpipelinesep2022/webapp/target/webapp.war ubuntu@172.31.35.193:/var/lib/tomcat9/webapps/leavelove'
+		}
+	}
+    }
+}    
