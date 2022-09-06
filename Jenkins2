@@ -1,23 +1,23 @@
-pipeline 
+pipeline
 {
 	agent any
-	stages
-	{
-		stage('Continuous Download')
-    		{
-			Steps
-			{
-				git 'https://github.com/intelliqittrainings/maven.git'
-    			}
-		}
-		stage('Continuous Build')
-    		{
-			Steps
-			{
-				sh 'mvn package'
-    			}
-		}
-		stage('Continuous Deployment')
+    	stages
+    	{
+        	stage('Continuous download') 
+        	{
+            		steps
+            		{
+                		git 'https://github.com/intelliqittrainings/maven.git'
+            		}
+        	}
+        	stage('Continuous Build') 
+        	{
+            		steps
+            		{
+                		sh 'mvn package'
+            		}
+        	}
+        	stage('Continuous Deployment')
 		{
 			steps
 			{
@@ -36,7 +36,7 @@ pipeline
     		{
 			steps
 			{
-				sh 'scp /home/ubuntu/.jenkins/workspace/scriptedpipelinesep2022/webapp/target/webapp.war ubuntu@172.31.35.193:/var/lib/tomcat9/webapps/leavelove'
+			sh 'scp /home/ubuntu/.jenkins/workspace/scriptedpipelinesep2022/webapp/target/webapp.war ubuntu@172.31.35.193:/var/lib/tomcat9/webapps/leavelove'
 			}	
 		}
 	}
