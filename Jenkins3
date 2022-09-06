@@ -1,0 +1,58 @@
+pipeline
+{
+	agent any
+    	stages
+    	{
+        	stage('Continuous download') 
+        	{
+            		steps
+            		{
+                		git 'https://github.com/intelliqittrainings/maven.git'
+            		}
+        	}
+        	stage('Continuous Build') 
+        	{
+            		steps
+            		{
+                		sh 'mvn package'
+            		}
+        	}
+        	stage('Continuous Deployment')
+		{
+			steps
+			{
+				sh 'scp /home/ubuntu/.jenkins/workspace/declarativepipeline/webapp/target/webapp.war ubuntu@172.31.33.176:/var/lib/tomcat9/webapps/anurag'
+			}
+		}
+		stage('Continuous testing')
+    		{
+			steps
+			{
+				git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
+				sh 'java -jar /home/ubuntu/.jenkins/workspace/declarativepipeline/testing.jar'
+			}
+		}
+		stage('Continuous delivery')
+    		{
+			steps
+			{
+			sh 'scp /home/ubuntu/.jenkins/workspace/declarativepipeline/webapp/target/webapp.war ubuntu@172.31.35.193:/var/lib/tomcat9/webapps/neelima'
+			}	
+		}
+	}
+	post
+	{
+	    success
+	    {   
+	        emailext body: 'the code is success', subject: 'Success', to: 'jushkumars@gmail.com'
+	    }
+	    failure
+	    {
+	        emailext body: 'the code is error', subject: 'failure', to: 'jushkumars@gmail.com'
+	    }
+	    always
+	    {
+	        emailext body: 'cool buddy', subject: 'always', to: 'jushkumars@gmail.com'
+	    }
+	}
+}
