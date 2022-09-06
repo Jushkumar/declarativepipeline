@@ -21,7 +21,7 @@ pipeline
 		{
 			steps
 			{
-				sh 'scp /home/ubuntu/.jenkins/workspace/declarativepipeline/webapp/target/webapp.war ubuntu@172.31.33.176:/var/lib/tomcat9/webapps/keeplove'
+				sh 'scp /home/ubuntu/.jenkins/workspace/declarative pipeline/webapp/target/webapp.war ubuntu@172.31.33.176:/var/lib/tomcat9/webapps/keeplove'
 			}
 		}
 		stage('Continuous testing')
